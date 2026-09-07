@@ -1,0 +1,56 @@
+\
+# Phase 1 prod stack — the one stack this workspace runs initially.
+#
+# This is a skeleton: firmware/, backend/, and frontend/ are empty at bootstrap time
+# (see CLAUDE.md — this workspace starts greenfield). Uncomment/extend services as each
+# subsystem's first /ship pipeline actually lands code. build-deploy-engineer owns this file.
+#
+# Phase 2 (a docker-compose.integration.yml spun up per-PR for e2e testing) is intentionally
+# NOT built yet — see docs/pipeline/README.md. Build it only when explicitly asked.
+
+services:
+  # backend:
+  #   build: ./backend
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - mosquitto
+  #     - timescaledb
+
+  # frontend:
+  #   build: ./frontend
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+
+  # mosquitto:
+  #   image: eclipse-mosquitto:2
+  #   restart: unless-stopped
+  #   volumes:
+  #     - mosquitto-data:/mosquitto/data
+  #   ports:
+  #     - "8883:8883"   # MQTT over TLS — room controllers talk to this locally; cloud sync
+  #                       is a separate, optional client, per the local-first architecture
+  #                       documented in knowledge/cea/cad/Rack_A_Specification.ocr.md §07
+
+  # timescaledb:
+  #   image: timescale/timescaledb:latest-pg16
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+  #   volumes:
+  #     - timescale-data:/var/lib/postgresql/data
+  #   secrets:
+  #     - db_password
+
+# volumes:
+#   mosquitto-data:
+#   timescale-data:
+
+# secrets:
+#   db_password:
+#     file: ./.secrets/db_password.txt

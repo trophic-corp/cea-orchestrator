@@ -1,0 +1,28 @@
+{
+  "apiKeyHelper": "echo \"$OPENROUTER_API_KEY\"",
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+    "ANTHROPIC_MODEL": "z-ai/glm-5.3[1m]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "z-ai/glm-5.3[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "z-ai/glm-5.3[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "z-ai/glm-5.3-flash[1m]"
+  },
+  "permissions": {
+    "ask": [
+      "Bash(git push --force*)",
+      "Bash(git push *--force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git checkout -- *)",
+      "Bash(git clean -f*)",
+      "Bash(git branch -D*)",
+      "Bash(gh secret set*)",
+      "Bash(gh api*PATCH*)",
+      "Bash(gh api*DELETE*)",
+      "Bash(gh api*-X PATCH*)",
+      "Bash(gh api*-X DELETE*)",
+      "Bash(gh repo delete*)",
+      "Bash(gh repo edit*)",
+      "Edit(.github/workflows/*.lock.yml)"
+    ]
+  }
+}

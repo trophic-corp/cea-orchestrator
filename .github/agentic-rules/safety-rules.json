@@ -1,0 +1,152 @@
+{
+  "$schema_note": "Physical and process safety thresholds for the CEA/aquascaping program. Every value is sourced to a specific document/section from knowledge/cea/. Values not present in any source document are marked \"source\": \"TBD — needs domain expert input\" rather than invented. Agents (especially security-safety-reviewer and the botany/electronics/mechanical specialists) MUST treat this file as the ground truth for physical safety gates and MUST stop and ask a human rather than guess when a threshold they need is not here.",
+  "last_updated": "2026-09-05",
+
+  "lighting": {
+    "ppfd_operating_band_umol_m2_s": { "min": 150, "max": 210,
+      "source": "Phase A §1.1, §2.3, §2.4; corroborated by Rack A Specification §00 (PPFD band 150-210 pmol-m2-s) and Rack A Manufacturing Pack QC criterion for T2 (PPFD 150-210, CV < 15%)" },
+    "ppfd_photoinhibition_risk_above_umol_m2_s": 210,
+    "ppfd_growth_suppression_below_umol_m2_s": 100,
+    "photoperiod_microgreens_hours": { "min": 16, "max": 24,
+      "note": "24h continuous increases yield/phytochemicals but raises energy draw; tradeoff, not a hard rule",
+      "source": "Phase A §1.1, §2.3 (Zone A: 16-20h)" },
+    "photoperiod_aquatic_zone_hours": { "min": 12, "max": 16, "source": "Phase A §2.3 (Zone B)" },
+    "photoperiod_saffron_induction": "low-to-moderate light during cool induction phase; no numeric photoperiod given",
+    "dli_mol_m2_day": {
+      "value": "TBD — needs domain expert input",
+      "note": "Not stated directly as DLI in any source document. It is derivable from PPFD x photoperiod (e.g. 210 umol/m2/s x 18h -> ~13.6 mol/m2/day) but that derived figure is NOT itself sourced text, so it is not recorded here as a rule. Compute per-crop from the PPFD and photoperiod values above if a DLI figure is needed, and flag the computed value as derived, not sourced.",
+      "source": "TBD — needs domain expert input"
+    }
+  },
+
+  "climate": {
+    "air_temperature_c": { "min": 20, "max": 24, "source": "CEA_Room_-_Floor_Plan.ocr.md §06 CLIMATE setpoint table" },
+    "relative_humidity_pct": { "min": 55, "max": 70, "hysteresis_pct": 5, "source": "CEA_Room_-_Floor_Plan.ocr.md §06" },
+    "vpd_kpa": { "min": 0.6, "max": 1.0,
+      "control_note": "Computed from T and RH by the controller — never sensed directly",
+      "source": "CEA_Room_-_Floor_Plan.ocr.md §06 CLIMATE setpoint table" },
+    "canopy_air_velocity_m_s": { "min": 0.2, "max": 0.5, "upper_stress_bound_m_s": 1.3,
+      "source": "Phase A §1.4; Rack A Specification §05; Rack A Manufacturing Pack §01; CEA_Room_-_Floor_Plan.ocr.md §06" },
+    "canopy_velocity_coefficient_of_variation": {
+      "note": "Two slightly different action thresholds appear in the source set for when the CV is bad enough to require the Phase-2 ducted plenum retrofit. Flagging both rather than picking one.",
+      "rack_a_spec_threshold_pct": { "value": 15, "action": "fit side/rear enclosure panels", "source": "Rack A Specification §01" },
+      "floor_plan_commissioning_threshold_pct": { "value": 20, "action": "below 20%: plenum is an optimisation only; above 20%: plenum is a required fix", "source": "CEA_Room_-_Floor_Plan.ocr.md §04" }
+    },
+    "co2_enrichment_target_umol_mol": { "min": 1000, "max": 1500,
+      "source": "Phase A §1.3, §2.4; CEA_Room_-_Floor_Plan.ocr.md §06" },
+    "co2_safety_alarm_ppm": { "value": 5000, "action": "independent monitor, fail-closed solenoid",
+      "source": "CEA_Room_-_Floor_Plan.ocr.md §06 (\"CO2 safety: Alarm at 5000 ppm, fail-closed solenoid\")" },
+    "co2_asphyxiation_context": "A 22 kg CO2 cylinder released into a 60.2 m3 room produces roughly 12 m3 of gas (~20% of room volume) — lethal well before it is noticed. This is why the CO2 cylinder is sited on the terrace with only the regulated line entering the room, and why the low-level fail-closed monitor is non-optional. Source: CEA_Room_-_Floor_Plan.ocr.md §06.",
+    "fresh_air_ach": { "min": 0.3, "max": 0.5, "source": "CEA_Room_-_Floor_Plan.ocr.md §06" },
+    "electrical_load_phase_imbalance_target_pct": { "max": 15,
+      "note": "As-designed 11-rack layout actually lands at ~20% imbalance on single-phase HVAC; resolved by specifying 3-phase HVAC. Documented as an open engineering finding, not a clean pass.",
+      "source": "CEA_Room_-_Floor_Plan.ocr.md §05" }
+  },
+
+  "irrigation_fertigation": {
+    "ph_operating_target": { "min": 5.6, "max": 6.2,
+      "note": "Operating/growing target for the nutrient solution.",
+      "source": "Phase A §1.6, §2.4" },
+    "ph_recovery_water_accept_gate": { "min": 4.5, "max": 7.5,
+      "note": "Wider pass/fail gate (G2) applied to recovered/reused water before it is allowed back into the rising main — distinct from the tighter 5.6-6.2 growing target above. OCR on this page (\"45-75\") is a high-confidence read of \"4.5-7.5\" given the pH context, but treat as needing a quick sanity check against the source PDF if this value drives a code path.",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §07 gate G2" },
+    "ec_operating_target": {
+      "value": "TBD — needs domain expert input",
+      "note": "Phase A identifies EC as a dominant control variable (n=36 studies) but states no numeric target range. Phase D specifies sensor measurement range (0-5,000+ uS/cm) but that is instrument spec, not a target/safety threshold.",
+      "source": "TBD — needs domain expert input"
+    },
+    "ec_recovery_water_accept_gate": {
+      "note": "Gate G1 in Closed-Loop_Water_Recovery.ocr.md §07 exists (\"EC < setpoint x ~1.2, action: trough dump valve to waste on failure\") but the OCR of the exact numeric threshold on this page (\"< 15 setpoint — < 180 mS/cm at a 1.20 setpoint\") is garbled/inconsistent (180 mS/cm is implausibly high for nutrient solution EC) and should NOT be trusted for an implementation. Needs a plain-Claude visual pass on Closed-Loop Water Recovery.pdf page 8 before this gate is coded.",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §07 gate G1 — OCR UNRELIABLE, needs visual review"
+    },
+    "solution_temperature_c": { "operating_max": 26, "hard_inhibit_c": 28,
+      "action": "MV-01 (terrace master supply valve) inhibited if solution temperature exceeds 28C; gate G3 holds 60 min and re-tests before dumping recovered water above 26C",
+      "note": "Above 26C, dissolved O2 drops (9.1 mg/L at 20C -> 7.6 mg/L at 30C -> 6.4 mg/L at 40C) and Pythium zoospore activity rises sharply in that band.",
+      "source": "CEA_Room_-_Floor_Plan.ocr.md §06; Closed-Loop_Water_Recovery.ocr.md §04 Risk 1, §07 gate G3" },
+    "uv_disinfection_dose_mj_cm2": { "value": 100, "gate_threshold_pct_of_rated": 70,
+      "note": "100 mJ/cm2 is stated as the horticultural design dose for oomycete/bacterial control (Pythium, Fusarium). Gate G5 requires UV intensity >=70% of rated and lamp on before a recovery batch may transfer.",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §06, §07 gate G5" },
+    "filter_differential_pressure_bar_max": { "value": 1.0, "action": "inhibit pump, alarm, change elements",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §07 gate G4" },
+    "flood_and_drain_timing": {
+      "flood_depth_working_mm": 22,
+      "flood_dwell_min": 10,
+      "tray_rim_mm": 47,
+      "standpipe_collar_crest_mm": 30,
+      "standpipe_minimum_bore": "DN32 (DN25 rejected — passes exactly the fill rate at 8mm head over the crest, i.e. zero margin; DN32 passes 11.9 L/min, a 1.65x margin)",
+      "leak_interlock_solenoid_close_time_s_max": 60,
+      "note": "Leak/blocked-drain interlock: fill solenoids must be proven to close within 60 seconds during commissioning with a deliberately blocked drain. This is a QC HOLD POINT, not a design assumption.",
+      "source": "Rack A Specification §01, §05, §11; Rack A Manufacturing Pack §02 (check 7, T-tests), §12 QC checklist"
+    },
+    "pump_duty_cycle": {
+      "sequential_tier_fill_adopted": { "rate_l_min": 7.2, "supply_size": "DN20 branch", "cycle_min": 24 },
+      "simultaneous_all_tiers_rejected": { "rate_l_min": 29.0, "supply_size": "DN25-32 branch", "cycle_min": 13.5 },
+      "rationale": "Sequential (one tier at a time) filling costs ~11 minutes of cycle time — irrelevant at 1-3 cycles/day — but caps pump duty and pipe size so the pump/main never has to grow with rack count (20 racks need the same 7.2 L/min pump as 1). Note: this rule is superseded on the SUPPLY side once the terrace gravity-feed design (Rev 3) is adopted — gravity has spare head to flood all 4 tiers of a rack at once (Closed-Loop_Water_Recovery.ocr.md §02). Sequential DRAINING remains mandatory in all revisions because the recovery trough/gate logic is sized for one rack's batch (46L) against a 79L trough.",
+      "source": "Rack A Specification §01; Closed-Loop_Water_Recovery.ocr.md §02, §03"
+    },
+    "recovery_batch_run_limit_min": { "value": 4, "action": "P-02 stops on low-level switch OR a 4-minute run limit, whichever first — the run limit specifically catches a stuck float",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §07 sequence step 08" },
+    "blowdown_pct_of_returned_volume": { "value": 8, "schedule": "daily at 02:00, first batch of the day dumped regardless of gate result — this is deliberate salt control, not an error condition",
+      "source": "CEA_Room_-_Floor_Plan.ocr.md §03; Closed-Loop_Water_Recovery.ocr.md §05, §07" }
+  },
+
+  "saffron_corm_protocol": {
+    "warm_germination_storage_c": { "min": 23, "max": 30, "source": "Phase A §1.8" },
+    "cool_flower_induction_c": { "min": 15, "max": 16, "optimum_c": 16, "source": "Phase A §1.8" },
+    "alternative_day_night_regime_c": { "day": 15, "night": 6, "note": "Reported as optimal for corm development in a separate greenhouse study", "source": "Phase A §1.8" },
+    "high_temp_stress_reference_c": { "day": 25, "night": 15, "note": "10C above optimum; used as a stress-research reference point, not an operating setpoint", "source": "Phase A §1.8" }
+  },
+
+  "electrical_fail_safes": {
+    "rcbo_type_required": "Type A (NOT Type AC)",
+    "rcbo_rationale": "LED drivers and PWM/EC fans (and inverter-compressor HVAC) produce pulsating DC residual currents that a Type AC RCD/RCBO can fail to trip on. This is repeated as a hard requirement across every electrical section of the source set.",
+    "rcbo_ratings": {
+      "per_rack": "16 A Type A RCBO, 30 mA",
+      "per_group_of_8_racks": "63 A MCCB, Type 2 SPD",
+      "terrace_circuit": "10 mA RCBO (tighter than room circuits, because it's an outdoor/wet installation)"
+    },
+    "surge_protection": "Type 1+2 SPD at the main distribution board; Type 2 SPD per group panel (one per 8 racks), 10 kA, max 3m lead to earth bar",
+    "earthing": "TN-S per IS 3043; every rack frame bonded, continuity < 0.1 ohm, tested and recorded per rack",
+    "elv_boundary": "All conductors at or below bed/canopy level are 24V or 48V DC only. Mains (230V) is confined to an IP65 enclosure mounted above canopy height. This ELV boundary — not ingress rating — is what the source material calls the thing that makes the electrical and water systems genuinely independent.",
+    "electrical_water_vertical_separation_mm_min": 236,
+    "emergency_stop": "Room-level E-stop only (one latching mushroom head per aisle/door), NOT per-rack. Drops the group contactor / all fill solenoids / MV-01 / all pumps. Rationale given: 16 rack-level E-stops is 16 devices nobody can reach in an emergency; the per-rack isolator is for lock-out/tag-out maintenance, a different function.",
+    "source": "Rack A Specification §07; Rack A Manufacturing Pack §01, §05; CEA_Room_-_Floor_Plan.ocr.md §05; Closed-Loop_Water_Recovery.ocr.md §08; Phase A §2.6"
+  },
+
+  "valve_and_actuator_fail_safe_states": {
+    "note": "De-energized (power-loss) state for every controlled wet-side device in the current design. This table is safety-critical and should be treated as authoritative for any firmware/controller work touching these devices.",
+    "rack_fill_solenoids": "CLOSED — no bed fills unattended",
+    "rack_drain_solenoids": "OPEN — beds self-drain; no standing water left on a dead/powerless rack",
+    "terrace_master_supply_valve_MV-01": "CLOSED (spring-return) — the only thing holding back a full terrace reservoir must not be electricity",
+    "diverter_valve_FV-01": "TO WASTE — unverified/unreused water can never enter the rising main without power and a passed gate",
+    "trough_dump_valve": "CLOSED — a power cut must not silently discard a good, gate-passed batch",
+    "make_up_float_valve": "MECHANICAL float valve (not solenoid) — keeps working through a power cut by design, not by control logic",
+    "transfer_pumps_P-02_UV-01_DOS-01": "OFF",
+    "vacuum_breaker": "Passive device at the down-main high point — prevents a downstream failure from siphoning the terrace tank",
+    "overflow_design_rule": "Every vessel keeps a gravity overflow one nominal size larger than its largest inlet, terminating with a visible air gap. An overflow that discharges into a closed pipe is explicitly called out as NOT an overflow — it becomes a second way to pressurise the tank.",
+    "source": "Closed-Loop_Water_Recovery.ocr.md §08; Rack A Specification §01, §11; Rack A Manufacturing Pack §01"
+  },
+
+  "structural_and_mechanical": {
+    "fastener_torque_m8_nm": 18,
+    "earth_continuity_ohm_max": 0.1,
+    "tip_over_unanchored_rack": {
+      "empty_horizontal_pull_n": 139,
+      "loaded_horizontal_pull_n": 307,
+      "note": "Height:depth ratio 3.48:1 is below the 4:1 threshold at which anchoring is normally mandated, so freestanding is technically defensible — but the empty-rack case (139N, ~14kgf) is called out as \"genuinely marginal\" and wall anchors are specified as mandatory, not optional, in the actual BOM/assembly instructions.",
+      "source": "Rack A Manufacturing Pack §02 check 6, §11 assembly step 08" },
+    "terrace_slab_loading_kn_m2": { "concentrated_worst_case": 5.5, "spread_over_beam_lines": 2.2, "typical_accessible_terrace_rating": "1.5-2.0",
+      "note": "Explicitly flagged in the source as needing a structural engineer's sign-off against the building's actual drawings before the terrace tank is ordered — the one item in the Water Recovery doc the authors say cannot be resolved by choosing better equipment.",
+      "source": "Closed-Loop_Water_Recovery.ocr.md §04 Risk 3" },
+    "operator_access_lifting_index": { "value_range": "0.50-0.72", "criterion": "NIOSH LI < 1.0", "source": "Rack A Manufacturing Pack §02 check 12" }
+  },
+
+  "open_structural_items_not_yet_closed": [
+    { "item": "Depth-plane bracing (relying on decks as horizontal diaphragms instead of per-tier cross beams) has not been verified by frame analysis; tip-over numbers assume it holds.",
+      "closes_by": "Prototype sway test T16 (300N horizontal, front-back and side, residual deflection < 5mm)",
+      "source": "Rack A Specification §10; Rack A Manufacturing Pack §02, §13" },
+    { "item": "Canopy velocity uniformity for the Phase-1 (no ducted plenum) rack build is unmeasured; point-source fan is expected to produce ~33% CV vs ~10% for the Phase-2 ducted plenum.",
+      "closes_by": "5-point-per-tier hot-wire anemometer traverse at commissioning and quarterly",
+      "source": "Rack A Specification §01, §05; Rack A Manufacturing Pack §09; CEA_Room_-_Floor_Plan.ocr.md §04" }
+  ]
+}
