@@ -1,10 +1,8 @@
 # trophic
 
-Controlled Environment Agriculture (CEA) + aquascaping hardware R&D program — saffron
-cultivation, hydroponic/aquascaping product lines. R&D room in Ooty, manufacturing base in
-Coimbatore, Tamil Nadu, India.
+Controlled Environment Agriculture (CEA)
 
-This repository is a multi-agent Claude Code workspace: requirement → domain review →
+This repository is a multi-agent workspace: requirement → domain review →
 architecture → security review → implementation → deployment, carried coherently across
 every feature via Architecture Decision Records rather than re-litigated per change. See
 `CLAUDE.md` for the full model, and `docs/pipeline/README.md` for why the orchestration is
@@ -36,9 +34,3 @@ hardware/                 PCB/KiCad refs, pinout maps
 .claude/commands/         /ship, /extend, /fix, /health-check
 docker-compose.prod.yml   Phase 1 prod stack
 ```
-
-## Model / provider
-
-This workspace runs on GLM-5.3 via `.claude/settings.json` — see `CLAUDE.md` for the
-provider config and its text-only limitation (relevant to the scanned PDFs in
-`knowledge/cea/cad/`).
