@@ -1,6 +1,6 @@
 # trophic
 
-Controlled Environment Agriculture (CEA)
+CEA Orchestrator
 
 This repository is a multi-agent workspace: requirement → domain review →
 architecture → security review → implementation → deployment, carried coherently across
