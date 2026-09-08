@@ -73,9 +73,13 @@ to write its artifact to the `docs/pipeline/<slug>/` path it's given.
   — review/report only.
 - Any agent hitting genuine ambiguity in a physical safety threshold stops and asks rather
   than guessing.
-- Repos are created under the `trophic` GitHub org (`gh repo create trophic/<name>`);
-  `github-ops-agent` is the only agent that creates repos, opens PRs, sets branch
-  protection, or manages secrets, and it never merges automatically.
+- Repos are created under the `trophic-corp` GitHub org
+  (`gh repo create trophic-corp/<name>`); `github-ops-agent` is the only agent that creates
+  repos, opens PRs, sets branch protection, or manages secrets, and it never merges
+  automatically. **`trophic-corp` is a placeholder and is expected to change before the
+  real release** — and it must never be renamed by global find-replace, because the
+  unrelated MQTT topic root `trophic/<org>/<site>/…` (ADR-0004) shares the word and does
+  not track the GitHub org.
 
 ## Repository layout
 
@@ -85,14 +89,31 @@ docs/adr/              Architecture Decision Records — check before designing 
 docs/pipeline/         per-requirement working artifacts (PRD, HLD, LLD, reviews)
 docs/pipeline/health-reports/   periodic maintainer-agent output
 docs/site/             Starlight documentation site
-firmware/               ESP32 / embedded
-backend/                services
-frontend/               dashboards / UI
+firmware/               ESP32 / embedded          (empty until firmware work lands)
+backend/                services — Go (ADR-0006)  (empty until Phase 1 build starts)
+frontend/               dashboards / UI — TS      (empty until Phase 1 build starts)
 hardware/               PCB/KiCad refs, pinout maps
 .github/agentic-rules/safety-rules.json   sourced physical/process safety thresholds
 .claude/agents/         specialist agent definitions
 .claude/commands/       /ship, /extend, /fix, /health-check
 ```
+
+### Monorepo boundary discipline (ADR-0008 — binding)
+
+This is a **monorepo by decision, not by default**, and it stays cheap to split later only
+if these hold. Enforce them while writing code, not at review time:
+
+1. The **OpenAPI spec is the contract of record** between `backend/` and `frontend/`.
+   Never share types across subsystem lines by file path — generate them.
+2. `firmware/` and `backend/` couple **only** through the versioned MQTT topic/payload
+   schema (`docs/iot/device-control-model.md` §4). No shared source, ever.
+3. **No cross-directory imports** between `backend/`, `frontend/`, and `firmware/`.
+4. Each subsystem keeps its **own build and dependency manifest**, and its CI job stays
+   independently runnable.
+
+ADR-0008 lists the named triggers (T1–T6) that reopen the split decision — most likely
+[OQ-3] landing on a Linux SBC, or the aquascaping product line starting. If you think you
+have hit one, say so; don't split anything unilaterally.
 
 ## CI/CD
 

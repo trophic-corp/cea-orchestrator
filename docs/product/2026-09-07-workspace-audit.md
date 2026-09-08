@@ -148,7 +148,10 @@ unilaterally.
    a weighed decision; superseded 2026-09-07 by the OQ-16 R1 spike (Go vs Node.js/TS)**;
    TS frontend; ESP-IDF firmware (CI detection logic).
 10. Monorepo; `/ship` `/extend` `/fix` `/health-check` pipelines; docs/pipeline artifacts;
-    ADR process; github-ops-only PRs under `trophic` org; no auto-merge.
+    ADR process; github-ops-only PRs under the `trophic-corp` org (placeholder name,
+    corrected 2026-09-08 — the docs had said `trophic`); no auto-merge. **The monorepo
+    entry here was a scaffold assumption, never weighed — reviewed and made a real
+    decision 2026-09-08 by [ADR-0008](../adr/0008-monorepo-with-named-split-triggers.md).**
 11. Phase-1 CI/CD = single prod stack; integration stack deliberately deferred.
 12. Manufacturing strategy (Phase E): fabrication permanently outsourced (Coimbatore);
     firmware + substrate chemistry + Ooty performance dataset = never-outsource IP;

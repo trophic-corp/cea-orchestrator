@@ -13,6 +13,9 @@ release cuts. `release-manager` owns this file.
   (`knowledge/cea/`), sourced physical safety thresholds
   (`.github/agentic-rules/safety-rules.json`), Phase 1 CI/CD scaffold.
 - **ADR-0006** — Go as the backend implementation language (resolves OQ-16).
+- **ADR-0008** — monorepo for now, with six named triggers (T1–T6) that reopen the split
+  decision. Converts an unexamined scaffold assumption into a real decision with a review
+  condition. Boundary discipline mirrored into CLAUDE.md so agents enforce it at build time.
 - OQ-3 room-controller-platform decision brief (`docs/pipeline/oq3-room-controller-platform/`).
 - OQ-16 spike protocol and scorecard (`docs/pipeline/oq16-backend-language-spike/`),
   retained as the record of how the collapsed decision would have been scored.
@@ -30,6 +33,13 @@ release cuts. `release-manager` owns this file.
   verification of the scanned engineering drawings no longer needs a separate session.
 - `system-architecture.md` §2 backend language Node.js → Go, per ADR-0006.
 - Repository normalized to LF line endings, removing 73 files of phantom diff.
+- GitHub org corrected `trophic` → `trophic-corp` in CLAUDE.md, `github-ops-agent`, and the
+  audit, matching the actual remote. Recorded as a **placeholder expected to change before
+  release**, with a warning against renaming it by find-replace: the MQTT topic root
+  `trophic/<org>/<site>/…` (ADR-0004) shares the word and does not track the GitHub org.
+- CI `detect` job now probes `backend/go.mod` and the backend job builds with Go, replacing
+  the `package.json`/npm assumptions ADR-0006 superseded. Left unfixed, the backend job
+  would have silently never run.
 
 ### Notes
 
