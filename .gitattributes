@@ -1,0 +1,21 @@
+# Normalize all text to LF in the repository, regardless of the checkout platform.
+# This workspace is edited from Windows/WSL; without this, editors rewrite whole files
+# as CRLF and every file shows as fully modified, making review diffs useless.
+* text=auto eol=lf
+
+# Binary / reference source documents — never touch.
+*.pdf   binary
+*.docx  binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.zip   binary
+
+# KiCad and firmware binaries (hardware/, firmware/ build outputs).
+*.kicad_pcb  text eol=lf
+*.kicad_sch  text eol=lf
+*.step       binary
+*.stl        binary
+*.bin        binary
+*.elf        binary

@@ -1,7 +1,7 @@
 # 0005. Single-tenant now, tenant-ready schema
 
-**Status:** proposed
-**Date:** 2026-09-07
+**Status:** accepted
+**Date:** 2026-09-07 · **Accepted:** 2026-09-08 — owner approval at Phase 1 handover, approved as written
 **Pipeline artifact:** docs/product/2026-09-07-workspace-audit.md (foundation analysis)
 
 ## Context

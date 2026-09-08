@@ -48,7 +48,9 @@ compose stack is where it would live when productization needs it.
 ## 2. Service architecture (facility platform, Release 1 shape)
 
 ```
-backend (Node.js, single modular service — boundaries as modules, not microservices)
+backend (Go, single modular service — boundaries as modules, not microservices)
+         [ADR-0006, 2026-09-08 — supersedes the scaffold's inherited Node.js assumption;
+          module boundaries below are unchanged by the language decision]
   ├─ authz          (users, roles, sessions, org scoping)
   ├─ registry       (facility/room/rack/tier/zone, devices, capability profiles)
   ├─ config         (desired-state authoring, recipe application, overrides)
