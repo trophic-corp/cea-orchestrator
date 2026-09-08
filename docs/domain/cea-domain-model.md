@@ -87,9 +87,12 @@ profiles on `Crop`:
   extension (production-model §7, open question).
 - **exotic / other** — undefined until [OQ-8] resolves; model must not block a third
   category.
-- **saffron** (if pursued) — two-phase temperature protocol per `safety-rules.json`
-  `saffron_corm_protocol`; expressible as a recipe with lifecycle phases + a
-  temperature-program sub-recipe; no special entities.
+- **saffron** — **deferred indefinitely (owner, 2026-09-08; [OQ-1] closed). Not active
+  scope; build nothing for it.** Retained here only as the worked example that the model
+  is genuinely crop-agnostic: were it ever revived, its two-phase temperature protocol
+  (`safety-rules.json` `saffron_corm_protocol`, retained sourced data) would express as a
+  recipe with lifecycle phases + a temperature-program sub-recipe — **no new entities and
+  no schema change**. That is the property this section exists to demonstrate.
 
 The recipe parameter schema is grouped by capability domain (lighting, climate,
 irrigation, lifecycle), not by crop — a new crop category is new recipe parameter sets

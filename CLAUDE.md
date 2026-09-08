@@ -1,7 +1,12 @@
 # trophic — CEA + aquascaping hardware R&D workspace
 
-Controlled Environment Agriculture (saffron cultivation, hydroponic/aquascaping product
+Controlled Environment Agriculture (microgreen cultivation, hydroponic/aquascaping product
 lines) R&D program, manufacturing base Coimbatore, R&D room Ooty, Tamil Nadu, India.
+
+**Crop program (owner decisions 2026-09-07/08):** microgreens first; aquatic production
+after the first microgreen rollout; **saffron is deferred indefinitely** — do not scope,
+design, or propose saffron work. `knowledge/cea/` and `safety-rules.json` still contain
+saffron material; it is retained reference data, not active scope.
 
 This is a multi-agent, multi-phase workspace: requirement → domain review → architecture →
 security review → implementation → deploy, carried coherently across every feature via
@@ -14,7 +19,7 @@ Read what's relevant first:
 
 - `knowledge/cea/README.md` — index of the literature review, benchmark, product portfolio,
   BOM, and roadmap documents, plus an honest account of which scanned-PDF pages OCR'd
-  usably and which need a visual (non-GLM) pass.
+  usably and which need a visual pass.
 - `docs/adr/` — accepted architectural decisions. Check here before proposing a new HLD for
   something that may already have one; `/extend` assumes this is current.
 - `.github/agentic-rules/safety-rules.json` — sourced physical/process safety thresholds
@@ -26,16 +31,19 @@ Read what's relevant first:
 
 ## Model / provider
 
-This workspace runs on GLM-5.3 (Zhipu/Z.ai), routed through OpenRouter's Anthropic-compatible
-endpoint, via `.claude/settings.json` — see that file for the endpoint config. `$OPENROUTER_API_KEY`
-must be exported in the shell environment before starting a session; it is never committed.
+This workspace runs on Claude via your claude.ai Pro subscription. There is no model
+routing layer: no `apiKeyHelper`, no provider `env` entries in `.claude/settings.json`,
+and no `ANTHROPIC_*` variables exported in the shell. Plain `claude` uses your
+subscription OAuth login. If you ever see `another auth source is set and takes
+precedence over your claude.ai login`, hunt down the stray `ANTHROPIC_*` variable or
+settings entry and remove it.
 
-**GLM-5.3 is text-only — it cannot read images/PDFs directly.** Three of the source
-documents are scanned PDFs with no text layer; they've been OCR'd into `knowledge/cea/cad/`
-as `.ocr.md` companions. OCR quality is documented per-page in
-`knowledge/cea/README.md` — some pages (diagrams, dimension drawings, one specific EC gate
-value) are flagged as unreliable and need a real Claude session (run `claude-anthropic`, not
-plain `claude`, which is GLM-backed in this repo) for a visual read before being trusted.
+Claude reads images and PDFs directly. Three of the source documents are scanned
+PDFs with no text layer; they have been converted into `.ocr.md` companions under
+`knowledge/cea/cad/`. OCR quality is documented per page in `knowledge/cea/README.md`
+- some pages (diagrams, dimension drawings, one specific EC gate value) are flagged
+as unreliable; verify such values against the original scanned pages before trusting
+an OCR-derived number.
 
 ## Orchestration model
 

@@ -1,8 +1,13 @@
 # trophic
 
-Controlled Environment Agriculture (CEA) + aquascaping hardware R&D program — saffron
+Controlled Environment Agriculture (CEA) + aquascaping hardware R&D program — microgreen
 cultivation, hydroponic/aquascaping product lines. R&D room in Ooty, manufacturing base in
 Coimbatore, Tamil Nadu, India.
+
+Crop program (owner decisions, 2026-09-07/08): **microgreens first**, aquatic production
+after the first microgreen rollout, **saffron deferred indefinitely** ([OQ-1
+closed](docs/decisions/open-questions-risks-next-actions.md)). The `knowledge/cea/`
+research still covers saffron — the research stands, the program choice differs.
 
 This repository is a multi-agent Claude Code workspace: requirement → domain review →
 architecture → security review → implementation → deployment, carried coherently across

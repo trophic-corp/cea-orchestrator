@@ -21,9 +21,15 @@ Two companies share one platform:
 
 The existing research (`knowledge/cea/`) was written for a three-crop program
 (microgreens + aquascaping plants + saffron) with co-equal microgreen/aquatic zones. The
-current stated direction is microgreens-primary. This document treats the current
-direction as authoritative and the research as evidence; the divergence is tracked as
-[OQ-1 in open questions](../decisions/open-questions-risks-next-actions.md).
+current direction is microgreens-primary. This document treats the current direction as
+authoritative and the research as evidence.
+
+**Resolved 2026-09-08 ([OQ-1](../decisions/open-questions-risks-next-actions.md), owner):
+saffron is deferred indefinitely.** The program is microgreens first, aquatic production
+after the first microgreen rollout, exotic optional. Saffron material in `knowledge/cea/`
+and `safety-rules.json` is retained as reference, not active scope — re-entry is an owner
+decision plus a recipe definition, not a redesign (the model is crop-agnostic per
+ADR-0002/0003).
 
 ## 2. Product vision
 
@@ -53,7 +59,7 @@ Four commitments, in priority order:
 platform are **separate products** with separate UX. They may share platform
 capabilities: device identity/provisioning, telemetry pipeline, command pipeline,
 configuration/recipe versioning, alerting, observability, audit. Architecture decision:
-[ADR-0003](../adr/0003-capability-based-device-model.md) — the device layer is
+[ADR-0002](../adr/0002-capability-based-device-model.md) — the device layer is
 capability-based precisely so an aquarium light or pump controller is just another device
 profile. Shared *infrastructure*, never shared *UX*.
 
