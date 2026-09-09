@@ -4,6 +4,10 @@
 **Deliverable mapping:** crop/production model of the foundation analysis. Related:
 [cea-domain-model.md](cea-domain-model.md) (facility & recipe entities),
 [inventory-model.md](inventory-model.md) (what a batch turns into).
+**Owner decision 2026-09-07:** this engineering set is **draft-stage (the initial
+idea)** — statuses below describe the planned build as drafted and may be revised by the
+hardware program; the capability-based model (ADR-0002) is designed to absorb those
+revisions without schema or core-code changes.
 
 ## 1. Design principle
 
@@ -126,7 +130,9 @@ facts where recomputable):
 - Whether aquatic plant batches need a different phase set than microgreens (e.g.,
   propagation from mother plants vs seed; transition to submersed form at the customer).
   The state machine above is generic enough to hold both; aquatic-specific phases are an
-  open question for the botany specialist before Release 3 ships batches.
+  open question for the botany specialist. **Owner sequencing decision 2026-09-07:**
+  aquatic production starts after the first microgreen rollout — this question is
+  deferred to the aquatic phase, not a Release-3 blocker.
 - Whether "exotic plants" (currently undefined in any source document) introduces a
   lifecycle shape the generic state machine cannot hold — blocked on [OQ-8].
 - Seed lot and substrate lot traceability granularity (full lot tracking vs. optional

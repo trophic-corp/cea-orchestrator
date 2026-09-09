@@ -1,6 +1,9 @@
 # Incremental release roadmap
 
-**Status:** proposed · **Date:** 2026-09-07
+**Status:** **Phase 1 (Release 1) — accepted and locked 2026-09-08** (owner go-ahead,
+including the week-1 spike gate). Releases 2–8 remain **proposed** — shape agreed,
+scope not yet locked; each is scoped for real at its own kickoff.
+**Date:** 2026-09-07 · **Phase 1 locked:** 2026-09-08
 **Deliverable mapping:** incremental release roadmap of the foundation analysis. Release
 boundaries follow dependencies and risk, not the brief's example numbering — recipes
 move to R3 (they exist to be *pinned by batches*; earlier placement creates a throwaway
@@ -11,7 +14,11 @@ Hardware tracks in parallel (owned by the hardware program, not this platform): 
 manufacturing (Rack A MFG Rev 2), room fit-out (11 racks), HVAC/dehumidifier install,
 Phase-2 plenum retrofit. Platform releases are shaped so software is never blocked on
 that hardware (simulation contract), but each release's *production* validation names
-the hardware it needs.
+the hardware it needs. Owner decisions 2026-09-07: the engineering set is **draft-stage
+(initial idea)** — revisions are expected and are absorbed by the capability model, never
+hardcoded; crop rollout order is **microgreens first, aquatic production after the first
+microgreen rollout** (aquatic zone engineering + aquatic protocols are out of R1–R4
+scope).
 
 ---
 
@@ -53,7 +60,7 @@ statuses move to accepted as merged. **Not included:** any code.
 | Data | The R&D irreducibles complete: pinned versions + assignments + desired-state history + harvest actuals. |
 | Testing | Immutability policy tests (tamper detection), hash verification, batch↔telemetry join integrity; e2e harvest→lot handoff (with R4 stub). |
 | Acceptance | Operator plans→runs→harvests a real batch end-to-end; historical batch answers "which exact recipe version, which zones, what environment, what yield" from the system alone; recipe edits never affect past batches. |
-| NOT included | Inventory economics (R4), forecasts (R4), aquatic-specific lifecycle extensions ([OQ-7] pending domain review). |
+| NOT included | Inventory economics (R4), forecasts (R4), aquatic crop support entirely — deferred per owner sequencing 2026-09-07 (aquatic production starts after the first microgreen rollout; lifecycle question moves to that phase). |
 
 ## Release 4 — Production ops, inventory, forecast availability
 | Field | Definition |
@@ -120,7 +127,21 @@ statuses move to accepted as merged. **Not included:** any code.
 
 ---
 
-## Proposed Phase 1 (Release 1) — foundation, small and validatable
+## Phase 1 (Release 1) — foundation, small and validatable — **LOCKED 2026-09-08**
+
+> **Scope lock (owner, 2026-09-08).** The scope below is fixed as written, including the
+> week-1 spike gate. Additions go to a later release, not into Phase 1. Two notes carried
+> in from the handover:
+> - **Saffron is out** ([OQ-1] closed) — no Phase 1 impact, since Phase 1 contains no
+>   crop-specific logic at all. Recipes remain R3 and are untouched by that decision.
+> - **[OQ-16] is closed: the backend is Go** ([ADR-0006](../adr/0006-go-as-the-backend-language.md)).
+>   The two-arm spike was collapsed on the decisive owner-fluency criterion rather than
+>   run. Deliverable 1's "week-1 language spike gate" below is therefore **satisfied, not
+>   skipped** — but note it was satisfied by a judgement, not by evidence.
+> - **[OQ-3] (room controller compute platform) is still open**, and the owner has
+>   **paused the Phase 1 build behind it** (2026-09-08) rather than building on an
+>   assumption. [Decision brief](../pipeline/oq3-room-controller-platform/00-decision-brief.md)
+>   is ready; it closes as ADR-0007. This is the critical path.
 
 **Objective:** the platform's spine exists end-to-end and is proven on one rack + the
 virtual facility: registry, device/capability model, telemetry ingest/store/serve, basic
@@ -134,7 +155,12 @@ created), NFR-PER-01/02, tenant-scoping tests (ADR-0005).
 
 **Concrete deliverables:**
 1. Backend service modules: authz, registry, ingest (MQTT client), alerts, backup —
-   one Node.js service, Postgres+Timescale, Mosquitto wired in `docker-compose.prod.yml`.
+   one service, Postgres+Timescale, Mosquitto wired in `docker-compose.prod.yml`.
+   **Week-1 gate: language spike [OQ-16] — CLOSED 2026-09-08 → Go
+   ([ADR-0006](../adr/0006-go-as-the-backend-language.md)).** The planned two-arm build
+   (Go and Node.js/TS against the sim harness) was collapsed when the owner supplied the
+   decisive criterion — fluency — at kickoff. The service is Go; compose and the CI job
+   need their inherited Node assumptions replaced.
 2. Operator console v0: login, Home (facility status), Grow drill-down (rack/tier
    snapshots), Devices (registry/health/commissioning), Alerts (center), Settings
    (users, backup/export).

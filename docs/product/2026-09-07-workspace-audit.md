@@ -89,11 +89,17 @@ unilaterally.
 
 ### 3.1 Classification (authoritative → outdated)
 
+> **Owner decision 2026-09-07:** the Sep-2026 engineering set is **draft-stage — the
+> initial idea** (direction adopted, details mutable). It remains the best available
+> hardware truth and the platform builds around it, but specific parameters/topology may
+> be revised by the hardware program — the platform's capability model absorbs revisions
+> rather than hardcoding them.
+
 | Document | Status | Notes |
 |---|---|---|
-| `knowledge/cea/cad/Rack_A_MANUFACTURING_PACK.ocr.md` (MFG Rev 2) | **Authoritative** (current build definition) | with §7 caveats |
-| `…/Closed-Loop_Water_Recovery.ocr.md` (WRS Rev 3) | **Authoritative** (current water architecture) | gate G1/G2 values OCR-unreliable |
-| `…/CEA_Room_-_Floor_Plan.ocr.md` (ROOM Rev 3) | **Authoritative** (current room layout) | power table row 1 garbled |
+| `knowledge/cea/cad/Rack_A_MANUFACTURING_PACK.ocr.md` (MFG Rev 2) | **Authoritative-draft** (current build definition) | draft-stage; OCR caveats per §3.3-8 |
+| `…/Closed-Loop_Water_Recovery.ocr.md` (WRS Rev 3) | **Authoritative-draft** (current water architecture) | gate G1/G2 values OCR-unreliable |
+| `…/CEA_Room_-_Floor_Plan.ocr.md` (ROOM Rev 3) | **Authoritative-draft** (current room layout) | power table row 1 garbled |
 | `…/Rack_A_Specification.ocr.md` (SYS Rev 2) | **Partially superseded** (self-declared banner) | rack structure/irrigation valid; drain-to-waste → closed loop; header size superseded by Rev 3 pair |
 | `safety-rules.json` | **Authoritative** for thresholds | sourced, citation-backed, TBDs honestly marked (2026-09-05) |
 | `knowledge/cea/README.md` | **Authoritative index** | honest per-page OCR quality map |
@@ -107,7 +113,17 @@ unilaterally.
 
 ### 3.2 Decisions already made (documented — the platform must respect, not re-litigate)
 
-**Physical/control (engineering set, authoritative):**
+**Owner decisions recorded 2026-09-07:**
+- The Sep-2026 engineering set is **draft-stage — the initial idea**: these physical
+  decisions bind the platform's *model* (it is what we build around), but the hardware
+  program may revise specifics.
+- **Flood-and-drain is the confirmed irrigation choice for microgreens** (owner: better
+  suited than NFT) — all strategy-doc NFT references are superseded; Phase C product
+  1.3 (NFT trays) is pending portfolio re-evaluation.
+- **Aquatic production is confirmed in the plan, sequenced after the first microgreen
+  rollout** — aquatic engineering questions are deliberately deferred, not blocking.
+
+**Physical/control (engineering set — draft-stage initial design):**
 1. Three-layer edge control: rack controllers (tier sequences, fan PWM, local
    interlocks, last-known-good) → room controller (drain token, 8-gate reuse, dosing,
    HVAC/CO2 setpoints, local TSDB + local UI) → cloud ("remote view and history,
@@ -128,10 +144,14 @@ unilaterally.
 
 **Platform/infra (scaffolding + research):**
 9. MQTT over TLS to an India-region endpoint (Phase D: data residency) + local broker
-   in prod stack (compose); TimescaleDB pg16; Node backend/frontend; ESP-IDF firmware
-   (CI detection logic).
+   in prod stack (compose); TimescaleDB pg16; Node backend — **scaffold assumption, not
+   a weighed decision; superseded 2026-09-07 by the OQ-16 R1 spike (Go vs Node.js/TS)**;
+   TS frontend; ESP-IDF firmware (CI detection logic).
 10. Monorepo; `/ship` `/extend` `/fix` `/health-check` pipelines; docs/pipeline artifacts;
-    ADR process; github-ops-only PRs under `trophic` org; no auto-merge.
+    ADR process; github-ops-only PRs under the `trophic-corp` org (placeholder name,
+    corrected 2026-09-08 — the docs had said `trophic`); no auto-merge. **The monorepo
+    entry here was a scaffold assumption, never weighed — reviewed and made a real
+    decision 2026-09-08 by [ADR-0008](../adr/0008-monorepo-with-named-split-triggers.md).**
 11. Phase-1 CI/CD = single prod stack; integration stack deliberately deferred.
 12. Manufacturing strategy (Phase E): fabrication permanently outsourced (Coimbatore);
     firmware + substrate chemistry + Ooty performance dataset = never-outsource IP;
@@ -150,14 +170,17 @@ unilaterally.
    flood-and-drain per tier. → Resolved: engineering set is newer and is what's being
    manufactured. Phase C product 1.3 (NFT trays) needs re-evaluation against the
    flood-and-drain line (and against the brief's Trophic scope which *includes*
-   flood-and-drain equipment).
+   flood-and-drain equipment). **Owner-confirmed 2026-09-07: flood-and-drain is the
+   decision** — NFT superseded everywhere.
 3. **Control granularity** — Phase A zone-level (2–3 tier racks, curtain partitions);
    engineering set per-tier. → Resolved per-tier (engineering).
 4. **Aquatic zone missing from engineering** — Phase A specifies aquatic emersed
    propagation at >80% RH with humidity domes/misting; the Sep-2026 room design runs
    55–70% RH with flood-and-drain trays and **contains no aquatic accommodation at all**.
-   The 20–30% aquatic business line currently has no engineered home. → [OQ-5], high
-   priority before R3 batch modeling of aquatic crops.
+   The 20–30% aquatic business line currently has no engineered home. → **Owner
+   sequencing decision 2026-09-07: aquatic production is confirmed, deliberately after
+   the first microgreen rollout** — the engineering question is deferred to the aquatic
+   phase, not a near-term blocker [OQ-5].
 5. **CO2 "18–40%+ yield gains"** — both subsystem tables cite this; underlying §1.3 text
    supports ~18% at 550–650 ppm and qualitative gains above. The 40%+ upper bound is
    unsubstantiated. → Do not reuse without verification.
@@ -209,8 +232,9 @@ unilaterally.
 ## 5. Missing domain knowledge (blocking analysis per item)
 
 **Platform-blocking (must resolve before the named release):**
-- Aquatic production engineering (where/how in the current room; humidity, trays,
-  protocols) → blocks R3 aquatic batch modeling [OQ-5].
+- Aquatic production engineering (where/how in the room; humidity, trays, protocols) →
+  **deferred by owner decision 2026-09-07** (aquatic starts after the first microgreen
+  rollout); re-opens with the aquatic phase [OQ-5].
 - Per-crop microgreen baselines (lifecycle days, seeding density, expected yield/tray,
   blackout phases) → blocks R3 recipe templates having meaningful defaults; owner:
   Sholaverde operator experience + own trials (the R&D loop itself) [OQ-6].

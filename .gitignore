@@ -13,3 +13,7 @@ __pycache__/
 venv/
 *.log
 .claude/settings.local.json
+
+# Stray shell-config copies left in the repo root during the GLM→Claude migration.
+bashrc-cp
+*.bashrc-cp
