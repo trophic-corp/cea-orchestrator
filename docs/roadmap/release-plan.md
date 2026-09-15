@@ -138,10 +138,12 @@ statuses move to accepted as merged. **Not included:** any code.
 >   The two-arm spike was collapsed on the decisive owner-fluency criterion rather than
 >   run. Deliverable 1's "week-1 language spike gate" below is therefore **satisfied, not
 >   skipped** — but note it was satisfied by a judgement, not by evidence.
-> - **[OQ-3] (room controller compute platform) is still open**, and the owner has
->   **paused the Phase 1 build behind it** (2026-09-08) rather than building on an
->   assumption. [Decision brief](../pipeline/oq3-room-controller-platform/00-decision-brief.md)
->   is ready; it closes as ADR-0007. This is the critical path.
+> - **[OQ-3] (room controller compute platform) is still open.** The owner paused the
+>   Phase 1 build behind it on 2026-09-08, then **lifted the pause on 2026-09-10: Phase 1
+>   runs on the simulator** (deliverables 3–4 below are the virtual rack + virtual room
+>   controller, so nothing in Phase 1 is platform-specific). OQ-3 closes in parallel as
+>   ADR-0007 ([decision brief](../pipeline/oq3-room-controller-platform/00-decision-brief.md))
+>   and gates only real room-controller firmware.
 
 **Objective:** the platform's spine exists end-to-end and is proven on one rack + the
 virtual facility: registry, device/capability model, telemetry ingest/store/serve, basic

@@ -1,14 +1,12 @@
 # 0009. Vue 3 as the operator console frontend framework
 
-**Status:** proposed
+**Status:** accepted
 **Date:** 2026-09-08
 **Pipeline artifact:** docs/pipeline/frontend-framework-adr/
 
-> **Why `proposed` and not `accepted`.** Mirrors ADR-0006's convention: the decision itself
-> is settled (see below); it is recorded as `proposed` only because it hasn't gone through a
-> merged PR yet. `docs-writer` flips it to `accepted` once that PR merges — never before.
-> Unlike ADR-0006, this ADR is not waiting on OQ-3 for any reason: nothing about
-> room-controller compute platform touches a console framework choice (see Consequences).
+> **Accepted 2026-09-10** — PR #2 merged 2026-09-09 (`trophic-corp/cea-orchestrator`). Nothing about
+> the room-controller compute platform (OQ-3) touches a console framework choice (see
+> Consequences).
 
 ## Context
 
