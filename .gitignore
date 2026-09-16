@@ -17,3 +17,6 @@ venv/
 # Stray shell-config copies left in the repo root during the GLM→Claude migration.
 bashrc-cp
 *.bashrc-cp
+
+# Compose secrets (docker-compose.prod.yml `secrets:` file sources) — never committed.
+.secrets/

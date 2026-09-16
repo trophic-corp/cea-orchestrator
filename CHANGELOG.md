@@ -41,9 +41,13 @@ release cuts. `release-manager` owns this file.
   the `package.json`/npm assumptions ADR-0006 superseded. Left unfixed, the backend job
   would have silently never run.
 
+- **ADR-0006 and ADR-0009 `proposed` → `accepted`** (PR #2 merged 2026-09-09, status flipped 2026-09-10).
+- `knowledge/cea/README.md` no longer describes the model as text-only.
+
 ### Notes
 
-- Phase 1 build is **paused pending OQ-3** (room controller compute platform) at the
-  owner's direction — decision brief ready, closes as ADR-0007.
+- Phase 1 build was paused pending OQ-3 (room controller compute platform) on
+  2026-09-08. **Pause lifted 2026-09-10 (owner): Phase 1 runs on the simulator**; OQ-3
+  closes in parallel as ADR-0007 and gates only real room-controller firmware.
 - `gh` is unauthenticated on this host: `github-ops-agent` cannot open PRs or verify
   branch protection until `gh auth login` is run.

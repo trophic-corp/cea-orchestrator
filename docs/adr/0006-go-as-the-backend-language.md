@@ -1,15 +1,15 @@
 # 0006. Go as the backend implementation language
 
-**Status:** proposed
+**Status:** accepted
 **Date:** 2026-09-08
 **Pipeline artifact:** docs/pipeline/oq16-backend-language-spike/
 **Resolves:** [OQ-16](../decisions/open-questions-risks-next-actions.md)
 
-> **Why `proposed` and not `accepted`.** The decision itself is settled — see below. It is
-> held at `proposed` only until [OQ-3](../pipeline/oq3-room-controller-platform/00-decision-brief.md)
-> closes, so the ADR can record the room-controller platform as context rather than as a
-> pending question. **OQ-3 cannot reverse this** (§Consequences), so backend work in Go is
-> not gated on it.
+> **Accepted 2026-09-10** — PR #2 merged 2026-09-09 (`trophic-corp/cea-orchestrator`). The earlier
+> plan to hold this at `proposed` until [OQ-3](../pipeline/oq3-room-controller-platform/00-decision-brief.md)
+> closed was dropped when the owner un-paused Phase 1 on the simulator: **OQ-3 cannot
+> reverse this** (§Consequences), so waiting recorded nothing. When ADR-0007 lands it
+> should cross-reference this ADR rather than the other way round.
 
 ## Context
 

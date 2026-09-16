@@ -22,9 +22,10 @@ visually if an agent needs to parse one programmatically rather than just read i
 
 **None of these four PDFs have an embedded text layer** (`pdffonts` returns empty for all
 four) — they are print-to-PDF/scanned engineering documents. Each was rasterized per-page
-and OCR'd; the `.ocr.md` companion file is the *only* machine-readable form of these
-documents available to GLM-5.3 (see the workspace's `CLAUDE.md` / model config note — GLM-5.3
-is text-only and cannot read the PDFs directly the way a vision-capable model could).
+and OCR'd; the `.ocr.md` companion file is the text-searchable form of these documents.
+The workspace now runs on Claude, which reads the PDFs directly (see `CLAUDE.md`), so any
+value flagged below as OCR-unreliable can be verified against the original scanned page in a
+normal session.
 
 | Source PDF | Pages | OCR output | Quality |
 |---|---|---|---|
